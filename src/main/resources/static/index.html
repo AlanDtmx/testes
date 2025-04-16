@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Importar Horas Extras</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: auto; padding-top: 50px; }
+        label, input { display: block; margin-top: 10px; }
+        button { margin-top: 20px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h2>Importador de Horas Extras</h2>
+    <form method="POST" action="/upload/processar" enctype="multipart/form-data">
+        <label for="evento50">Código do Evento 50%:</label>
+        <input type="text" id="evento50" name="evento50" required />
+
+        <label for="evento100">Código do Evento 100%:</label>
+        <input type="text" id="evento100" name="evento100" required />
+
+        <label for="eventoNoturno">Código do Evento Noturno:</label>
+        <input type="text" id="eventoNoturno" name="eventoNoturno" required />
+
+        <label for="eventoAtrasos">Código do Evento Atrasos:</label>
+        <input type="text" id="eventoAtrasos" name="eventoAtrasos" required />
+
+        <label for="file">Selecionar Planilha (.xlsx):</label>
+        <input type="file" name="file" accept=".xlsx" required />
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
+

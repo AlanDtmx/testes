@@ -1,4 +1,4 @@
-package com.prefeitura;
+package Prefeitura;
 
 
 import org.springframework.boot.SpringApplication;

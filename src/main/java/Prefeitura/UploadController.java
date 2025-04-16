@@ -1,4 +1,4 @@
-package com.prefeitura;
+package Prefeitura;
 
 
 import org.apache.poi.ss.usermodel.*;
@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 
@@ -17,17 +18,15 @@ import java.util.Locale;
 @RequestMapping("/upload")
 public class UploadController {
     @PostMapping("/upload")
-    public ResponseEntity<String> verificarArquivo(@RequestParam("file") MultipartFile file,
+    public ResponseEntity<byte[]> verificarArquivo(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("evento50") String evento50,
                                                    @RequestParam("evento100") String evento100,
                                                    @RequestParam("eventoNoturno") String eventoNoturno,
-                                                   @RequestParam("eventoAtrasos") String eventoAtrasos
-
-    ) {
+                                                   @RequestParam("eventoAtrasos") String eventoAtrasos ) {
 
         try {
             if (file.isEmpty()) {
-                return ResponseEntity.badRequest().body("Arquivo está vazio.");
+                return ResponseEntity.badRequest().body("Arquivo está vazio.".getBytes());
             }
 
             InputStream inputStream = file.getInputStream();
@@ -80,17 +79,18 @@ public class UploadController {
             }
 
             workbook.close();
-            File outputDir = new File("output");
-            if (!outputDir.exists()) outputDir.mkdirs(); // cria a pasta se não existir
 
-            File arquivo = new File(outputDir, "resultado.txt");
-            FileWriter writer = new FileWriter(arquivo);
-            writer.write(resultado.toString());
-            writer.close();
+            // Converter para bytes
+            byte[] conteudo = resultado.toString().getBytes(StandardCharsets.UTF_8);
 
-            return ResponseEntity.ok("Arquivo gerado com sucesso e salvo em: " + arquivo.getAbsolutePath());
+            // Headers para download
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
+            headers.setContentDisposition(ContentDisposition.attachment().filename("resultado.txt").build());
+
+            return new ResponseEntity<>(conteudo, headers, HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Erro ao abrir o arquivo: " + e.getMessage());
+            return ResponseEntity.status(500).body(("Erro ao abrir o arquivo: " + e.getMessage()).getBytes());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.prefeitura;
+package Prefeitura;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
